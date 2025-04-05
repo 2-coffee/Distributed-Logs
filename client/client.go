@@ -27,10 +27,10 @@ func (s *Simple) Send(msgs []byte) error {
 // wait for new msgs or return an error in case something goes wrong
 func (s *Simple) Receive(scratch []byte) ([]byte, error) {
 	if scratch == nil {
-		scratch = make([]byte, defaultScratchsize)
+		scratch = make([]byte, defaultScratchsize) // making a buffer incase we are waiting
 	}
 	n, err := s.buf.Read(scratch)
-	if err != nil {
+	if err != nil { // error in Read
 		return nil, err
 	}
 	// return data and nil for error
