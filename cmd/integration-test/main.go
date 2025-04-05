@@ -28,7 +28,7 @@ func main() {
 	}
 
 	if want != got {
-		log.Fatalf("The expect sum %d is not equal to the actual sum", want, got)
+		log.Fatalf("The expected sum %d is not equal to the actual sum %d", want, got)
 	}
 
 	log.Printf("The test passed")
@@ -45,7 +45,7 @@ func receive(s *client.Simple) (sum int64, err error) {
 		} else if err != nil {
 			return 0, err
 		}
-
+		// each log has a new line at the end
 		ints := strings.Split(string(res), "\n")
 		for _, str := range ints {
 			if str == "" {
