@@ -47,8 +47,9 @@ func (s *Simple) Send(msgs []byte) error {
 	return nil
 }
 
-// Receive data from server
-// wait for new msgs or return an error in case something goes wrong
+// Receive data from server and
+// wait for new msgs or return an error in case something goes wrong;
+// User uses this function.
 func (s *Simple) Receive(scratch []byte) ([]byte, error) {
 	if scratch == nil {
 		scratch = make([]byte, defaultScratchsize) // making a buffer

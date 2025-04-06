@@ -2,20 +2,31 @@ package web
 
 import (
 	"fmt"
+	"io"
 
-	"github.com/2-coffee/Distributed-Logs/server"
 	"github.com/valyala/fasthttp"
 )
 
 const defaultBufSize = 512 * 1024
 
+// Defines an interface for backend storage
+type Storage interface {
+	Write(msgs []byte) error
+	Read(offset uint64, maxSize uint64, w io.Writer) (err error)
+	Ack() error
+}
+
 type Server struct {
-	s *server.InMemory // sending it to our service server
+	s Storage // sending it to our service server
 }
 
 // NewServer creates a Server pointer
-func NewServer(s *server.InMemory) *Server {
+func NewServer(s Storage) *Server {
 	return &Server{s: s} // creating an instance and sending it to web Server struct
+}
+
+func (s *Server) Serve() error {
+	return fasthttp.ListenAndServe(":8080", s.handler)
 }
 
 func (s *Server) handler(ctx *fasthttp.RequestCtx) {
@@ -46,7 +57,7 @@ func (s *Server) ackHandler(ctx *fasthttp.RequestCtx) {
 	}
 }
 
-// Read client requests.
+// Accepts client's read request
 func (s *Server) readHandler(ctx *fasthttp.RequestCtx) {
 	offset, err := ctx.QueryArgs().GetUint("off") // ask for offset
 	if err != nil {
@@ -67,8 +78,4 @@ func (s *Server) readHandler(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-}
-
-func (s *Server) Serve() error {
-	return fasthttp.ListenAndServe(":8080", s.handler)
 }

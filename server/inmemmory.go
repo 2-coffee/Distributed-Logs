@@ -18,6 +18,10 @@ type InMemory struct {
 
 // Accepts messages from clients then store them on disc
 func (s *InMemory) Write(msgs []byte) error {
+	// while testing, in memory was actually slower than reading from disk.
+	// This is probably due to using a slice (dynamic array),
+	// where it must copy all of the contents every time we reach max size.
+	// Reset the contents in acknowledgement phase instead of deallocating it.
 	s.buf = append(s.buf, msgs...)
 	return nil
 }
@@ -58,7 +62,7 @@ func (s *InMemory) Read(offset uint64, maxSize uint64, w io.Writer) (err error) 
 // Marks the current chunk as completed and free up memory
 func (s *InMemory) Ack() error {
 	// TODO: mark chunk as completed?
-	s.buf = nil
+	s.buf = s.buf[0:0] // resetting the contents, but allocated memory on RAM will still be there.
 	return nil
 }
 

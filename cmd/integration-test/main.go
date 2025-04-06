@@ -14,7 +14,9 @@ import (
 const maxN = 10000000
 const maxBufferSize = 1 << 20
 
+// Acting as our user interacting with client app.
 func main() {
+	// give it the address for the new client
 	s := client.NewSimple([]string{"http://localhost:8080"})
 	// don't want to keep all of the data in memory
 	want, err := send(s)

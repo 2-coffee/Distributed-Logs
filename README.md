@@ -2,8 +2,9 @@
 
 # Features
 
-1. Distributed logs with async replication  
-2. Explicit acknowledgement of data read  
+1. Distributed logs with async replication.  
+2. Explicit acknowledgement of data read.  
+3. Allow users to choose in-memory or on-disk log storage.  
 
 # Design
   
