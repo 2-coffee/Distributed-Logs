@@ -1,7 +1,16 @@
 package main
 
-import "log"
+import (
+	"log"
+
+	"github.com/2-coffee/Distributed-Logs/server"
+	"github.com/2-coffee/Distributed-Logs/web"
+)
 
 func main() {
-	log.Println("Hello World")
+	s := web.NewServer(&server.InMemory{})
+
+	log.Println("Listening for connections")
+
+	s.Serve()
 }

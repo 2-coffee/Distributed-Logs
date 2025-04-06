@@ -15,16 +15,16 @@ const maxN = 10000000
 const maxBufferSize = 1 << 20
 
 func main() {
-	s := client.NewSimple([]string{"localhost"})
+	s := client.NewSimple([]string{"http://localhost:8080"})
 	// don't want to keep all of the data in memory
 	want, err := send(s)
 	if err != nil {
-		log.Fatalf("Send error: %v", err)
+		log.Fatalf("Send error: %v send", err)
 	}
 
 	got, err := receive(s)
 	if err != nil {
-		log.Fatalf("Receive error: %v", err)
+		log.Fatalf("Receive error: %v receive", err)
 	}
 
 	if want != got {
